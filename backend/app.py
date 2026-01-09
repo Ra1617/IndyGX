@@ -1,12 +1,20 @@
-from backend.repository.company_repository import CompanyRepository
+from fastapi import FastAPI
+from backend.api.company_routes import router as company_router
 
-if __name__ == "__main__":
-    companies = CompanyRepository.list_companies()
-    print("Companies:")
-    for c in companies:
-        print(c)
 
-    print("\nFull company profile:")
-    company = CompanyRepository.get_company_full_profile(company_id="1")
-    print(company)
+app = FastAPI(
+    title="IndyGX Company Intelligence API",
+    version="1.0.0",
+)
+
+@app.get("/health", tags=["system"])
+def health_check():
+    return {"status": "ok"}
+
+# Register routers
+app.include_router(
+    company_router,
+    prefix="/companies",
+    tags=["companies"]
+)
  

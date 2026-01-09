@@ -20,7 +20,15 @@ class CompanyRepository:
                 CompanyPrimary.company_id,
                 CompanyPrimary.company_name
             )
-            return session.exec(stmt).all()
+            results = session.exec(stmt).all()
+        
+            return [
+                {
+                    "company_id": row.company_id,
+                    "company_name": row.company_name
+                }
+                for row in results
+            ]
 
     @staticmethod
     def get_company_by_id(company_id: str):
