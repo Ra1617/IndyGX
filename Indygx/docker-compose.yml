@@ -1,0 +1,137 @@
+version: "3.9"
+
+services:
+  # Company Core Service
+  company-core:
+    build: ./services/company-core
+    container_name: indygx-company-core
+    ports:
+      - "8001:8000"
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+    networks:
+      - indygx-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Company Profile Service
+  company-profile:
+    build: ./services/company-profile
+    container_name: indygx-company-profile
+    ports:
+      - "8002:8000"
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+    networks:
+      - indygx-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Financial Intelligence Service
+  financial-intel:
+    build: ./services/financial-intel
+    container_name: indygx-financial-intel
+    ports:
+      - "8003:8000"
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+    networks:
+      - indygx-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Competitive Intelligence Service
+  competitive-intel:
+    build: ./services/competitive-intel
+    container_name: indygx-competitive-intel
+    ports:
+      - "8004:8000"
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+    networks:
+      - indygx-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Contact & Engagement Service
+  contact:
+    build: ./services/contact
+    container_name: indygx-contact
+    ports:
+      - "8005:8000"
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+    networks:
+      - indygx-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Partnership & Ecosystem Service
+  partnership:
+    build: ./services/partnership
+    container_name: indygx-partnership
+    ports:
+      - "8006:8000"
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+    networks:
+      - indygx-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # IndyGX Assessment Service
+  indygx-assessment:
+    build: ./services/indygx-assessment
+    container_name: indygx-assessment
+    ports:
+      - "8007:8000"
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+    networks:
+      - indygx-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  indygx-network:
+    driver: bridge
+ 

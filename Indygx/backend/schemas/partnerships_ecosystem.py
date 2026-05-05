@@ -1,0 +1,25 @@
+from pydantic import BaseModel 
+
+
+
+class PartnershipsEcosystemBase(BaseModel):
+   
+    corporate_partnership_programs: str | None
+    university_academic_partnerships: str | None
+    industry_associations_memberships: str | None
+    strategic_partnerships: str | None
+    rnd_investment_percentage: str | None
+    technology_partners: str | None
+
+   
+
+class PartnershipsEcosystemCreateUpdate(PartnershipsEcosystemBase):
+
+    pass
+class PartnershipsEcosystemRead(PartnershipsEcosystemBase):
+
+    company_id: int
+
+    class Config:
+        from_attributes = True    
+ 
