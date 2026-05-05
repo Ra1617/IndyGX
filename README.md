@@ -1,1 +1,1 @@
-# Indygx
+# IndyGX
