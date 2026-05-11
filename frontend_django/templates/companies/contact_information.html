@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Contact — {{ company.company_name|default:"Company" }} — IndyGX{% endblock %}
+{% block breadcrumb %}
+  <a href="{% url 'companies:company_list' %}" style="color:var(--text-secondary)">Companies</a>
+  <span class="bc-sep">/</span>
+  <a href="{% url 'companies:company_detail' company.company_id %}" style="color:var(--text-secondary)">{{ company.company_name|default:"Company" }}</a>
+  <span class="bc-sep">/</span>
+  <span class="bc-current">Contact Information</span>
+{% endblock %}
+
+{% block content %}
+{% if company %}
+<div class="company-hero" style="padding:24px 32px;">
+  <div class="company-hero-name" style="font-size:24px;">{{ company.company_name }}</div>
+</div>
+{% include "companies/_tabs.html" %}
+{% endif %}
+
+{% if error %}<div class="alert alert-error">⚠ {{ error }}</div>{% endif %}
+
+{% if data %}
+<div class="grid-2">
+  <div class="card">
+    <div class="card-title">
+      <span class="card-title-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span>
+      General Contact
+    </div>
+    <div class="info-row"><span class="info-label">Email</span><span class="info-value">{% if data.contact_email %}<a href="mailto:{{ data.contact_email }}">{{ data.contact_email }}</a>{% else %}<span class="info-empty">—</span>{% endif %}</span></div>
+    <div class="info-row"><span class="info-label">Phone</span><span class="info-value">{% if data.phone_number %}<a href="tel:{{ data.phone_number }}">{{ data.phone_number }}</a>{% else %}<span class="info-empty">—</span>{% endif %}</span></div>
+    <div class="info-row"><span class="info-label">Decision Maker Access</span><span class="info-value">{% if data.decision_maker_accessibility %}{{ data.decision_maker_accessibility }}{% else %}<span class="info-empty">—</span>{% endif %}</span></div>
+  </div>
+  <div class="card">
+    <div class="card-title">
+      <span class="card-title-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
+      Primary Contact Person
+    </div>
+    <div class="info-row"><span class="info-label">Name</span><span class="info-value">{% if data.primary_contact_person_name %}{{ data.primary_contact_person_name }}{% else %}<span class="info-empty">—</span>{% endif %}</span></div>
+    <div class="info-row"><span class="info-label">Title</span><span class="info-value">{% if data.primary_contact_person_title %}{{ data.primary_contact_person_title }}{% else %}<span class="info-empty">—</span>{% endif %}</span></div>
+    <div class="info-row"><span class="info-label">Email</span><span class="info-value">{% if data.primary_contact_person_email %}<a href="mailto:{{ data.primary_contact_person_email }}">{{ data.primary_contact_person_email }}</a>{% else %}<span class="info-empty">—</span>{% endif %}</span></div>
+    <div class="info-row"><span class="info-label">Phone</span><span class="info-value">{% if data.primary_contact_person_phone_number %}<a href="tel:{{ data.primary_contact_person_phone_number }}">{{ data.primary_contact_person_phone_number }}</a>{% else %}<span class="info-empty">—</span>{% endif %}</span></div>
+  </div>
+</div>
+{% else %}
+  {% if not error %}
+  <div class="empty-state"><div class="empty-state-icon">📞</div><div class="empty-state-text">No contact data available</div></div>
+  {% endif %}
+{% endif %}
+{% endblock %}

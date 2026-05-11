@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}IndyGX — Company Intelligence{% endblock %}</title>
+  <meta name="description" content="{% block meta_description %}IndyGX is an AI-powered company intelligence platform for deep business profiling and competitive analysis.{% endblock %}" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/main.css' %}" />
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+
+<!-- ── SIDEBAR ─────────────────────────────────────────────── -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-logo">
+      <span class="brand-hex">⬡</span>
+    </div>
+    <div class="brand-text">
+      <span class="brand-name">INDY<span class="brand-accent">GX</span></span>
+      <span class="brand-tagline">Intelligence Platform</span>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">NAVIGATION</div>
+    <a href="{% url 'companies:dashboard' %}" class="nav-item {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}" id="nav-dashboard">
+      <span class="nav-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      </span>
+      <span class="nav-label">Dashboard</span>
+    </a>
+    <a href="{% url 'companies:company_list' %}" class="nav-item {% if request.resolver_match.url_name == 'company_list' %}active{% endif %}" id="nav-companies">
+      <span class="nav-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V7l8-4v18M19 21V11l-6-4"/><path d="M9 9h1M9 13h1M9 17h1M14 13h1M14 17h1"/></svg>
+      </span>
+      <span class="nav-label">Companies</span>
+    </a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="api-status" id="api-status-badge">
+      <span class="status-dot"></span>
+      <span class="status-text">API Connected</span>
+    </div>
+  </div>
+</aside>
+
+<!-- ── MAIN ────────────────────────────────────────────────── -->
+<div class="main-wrap">
+  <!-- Top bar -->
+  <header class="topbar">
+    <button class="topbar-toggle" id="sidebar-toggle" aria-label="Toggle sidebar">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <div class="topbar-breadcrumb">
+      {% block breadcrumb %}
+        <span class="bc-root">IndyGX</span>
+      {% endblock %}
+    </div>
+    <div class="topbar-actions">
+      {% block topbar_actions %}{% endblock %}
+    </div>
+  </header>
+
+  <!-- Page content -->
+  <main class="page-content">
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+
+    {% block content %}{% endblock %}
+  </main>
+</div>
+
+<script>
+  // Sidebar toggle
+  const toggle = document.getElementById('sidebar-toggle');
+  const sidebar = document.getElementById('sidebar');
+  const mainWrap = document.querySelector('.main-wrap');
+  toggle.addEventListener('click', () => {
+    sidebar.classList.toggle('collapsed');
+    mainWrap.classList.toggle('sidebar-collapsed');
+  });
+
+  // Animate elements on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+      }
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.card, .stat-card, .info-row').forEach(el => observer.observe(el));
+</script>
+{% block extra_scripts %}{% endblock %}
+</body>
+</html>

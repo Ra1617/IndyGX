@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}IndyGX Assessment — {{ company.company_name|default:"Company" }} — IndyGX{% endblock %}
+{% block breadcrumb %}
+  <a href="{% url 'companies:company_list' %}" style="color:var(--text-secondary)">Companies</a>
+  <span class="bc-sep">/</span>
+  <a href="{% url 'companies:company_detail' company.company_id %}" style="color:var(--text-secondary)">{{ company.company_name|default:"Company" }}</a>
+  <span class="bc-sep">/</span>
+  <span class="bc-current">Assessment</span>
+{% endblock %}
+
+{% block content %}
+{% if company %}
+<div class="company-hero" style="padding:24px 32px;">
+  <div class="company-hero-name" style="font-size:24px;">{{ company.company_name }}</div>
+</div>
+{% include "companies/_tabs.html" %}
+{% endif %}
+
+{% if error %}<div class="alert alert-error">⚠ {{ error }}</div>{% endif %}
+
+{% if data %}
+<!-- Score cards -->
+<div class="stat-grid mb-24">
+  <div class="stat-card">
+    <div class="stat-label">Partnership Potential</div>
+    <div class="stat-value">{{ data.partnership_potential_rating|default:"—" }}</div>
+    <div class="stat-sub">rating</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Collaboration Score</div>
+    <div class="stat-value">{{ data.collaboration_opportunity_score|default:"—" }}</div>
+    <div class="stat-sub">score</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Complementary Match</div>
+    <div class="stat-value">{{ data.complementary_services_match_score|default:"—" }}</div>
+    <div class="stat-sub">score</div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-title">
+    <span class="card-title-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span>
+    IndyGX Assessment Details
+  </div>
+  <div class="info-row">
+    <span class="info-label">Previous Interactions</span>
+    <span class="info-value">{% if data.previous_interactions %}{{ data.previous_interactions }}{% else %}<span class="info-empty">No previous interactions recorded</span>{% endif %}</span>
+  </div>
+  <div class="info-row">
+    <span class="info-label">Partnership Potential Rating</span>
+    <span class="info-value">{% if data.partnership_potential_rating %}<span class="badge badge-orange">{{ data.partnership_potential_rating }}</span>{% else %}<span class="info-empty">—</span>{% endif %}</span>
+  </div>
+  <div class="info-row">
+    <span class="info-label">Collaboration Opportunity</span>
+    <span class="info-value">{% if data.collaboration_opportunity_score %}<span class="badge badge-orange">{{ data.collaboration_opportunity_score }}</span>{% else %}<span class="info-empty">—</span>{% endif %}</span>
+  </div>
+  <div class="info-row">
+    <span class="info-label">Complementary Services Match</span>
+    <span class="info-value">{% if data.complementary_services_match_score %}<span class="badge badge-orange">{{ data.complementary_services_match_score }}</span>{% else %}<span class="info-empty">—</span>{% endif %}</span>
+  </div>
+</div>
+{% else %}
+  {% if not error %}
+  <div class="empty-state"><div class="empty-state-icon">📋</div><div class="empty-state-text">No assessment data available</div></div>
+  {% endif %}
+{% endif %}
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — IndyGX{% endblock %}
+{% block breadcrumb %}
+  <span class="bc-root">IndyGX</span>
+  <span class="bc-sep">/</span>
+  <span class="bc-current">Dashboard</span>
+{% endblock %}
+
+{% block content %}
+{% load static %}
+<div class="dash-hero">
+  <div class="dash-hero-title">Company <em>Intelligence</em><br>at your fingertips.</div>
+  <p class="dash-hero-sub">Explore deep profiles, competitive data, financials, and partnership intelligence across every tracked company.</p>
+  <div style="margin-top:28px;">
+    <a href="{% url 'companies:company_list' %}" class="btn btn-primary">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 21h18M5 21V7l8-4v18M19 21V11l-6-4"/></svg>
+      Browse Companies
+    </a>
+  </div>
+</div>
+
+{% if error %}
+  <div class="alert alert-error">⚠ {{ error }}</div>
+{% endif %}
+
+<div class="stat-grid">
+  <div class="stat-card">
+    <div class="stat-label">Total Companies</div>
+    <div class="stat-value">{{ stats.total_companies }}</div>
+    <div class="stat-sub">in the intelligence database</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Data Modules</div>
+    <div class="stat-value">7</div>
+    <div class="stat-sub">per company profile</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">API Status</div>
+    <div class="stat-value" style="font-size:22px;color:{% if error %}#ef4444{% else %}#22c55e{% endif %};">{% if error %}OFFLINE{% else %}LIVE{% endif %}</div>
+    <div class="stat-sub">FastAPI backend</div>
+  </div>
+</div>
+
+{% if stats.recent_companies %}
+<div class="page-header">
+  <h2 class="page-title">Recent <span>Companies</span></h2>
+  <p class="page-subtitle">Latest entries in the database</p>
+</div>
+<div class="company-grid">
+  {% for company in stats.recent_companies %}
+  <a href="{% url 'companies:company_detail' company.company_id %}" class="company-card">
+    <div class="company-card-id">ID #{{ company.company_id }}</div>
+    <div class="company-card-name">{{ company.company_name|default:"—" }}</div>
+    <span class="company-card-arrow">→</span>
+  </a>
+  {% endfor %}
+</div>
+<div style="margin-top:24px;text-align:center;">
+  <a href="{% url 'companies:company_list' %}" class="btn btn-ghost">View all companies →</a>
+</div>
+{% endif %}
+{% endblock %}

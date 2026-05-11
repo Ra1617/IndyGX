@@ -1,0 +1,34 @@
+{% comment %}Reusable macro for company detail tab navigation{% endcomment %}
+{% load static %}
+{% with cid=company.company_id %}
+<nav class="tab-nav" aria-label="Company sections">
+  <a href="{% url 'companies:company_detail' cid %}" class="tab-btn {% if active_tab == 'overview' %}active{% endif %}" id="tab-overview">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+    Overview
+  </a>
+  <a href="{% url 'companies:competitive_intelligence' cid %}" class="tab-btn {% if active_tab == 'competitive' %}active{% endif %}" id="tab-competitive">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+    Competitive
+  </a>
+  <a href="{% url 'companies:financials_funding' cid %}" class="tab-btn {% if active_tab == 'financials' %}active{% endif %}" id="tab-financials">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+    Financials
+  </a>
+  <a href="{% url 'companies:contact_information' cid %}" class="tab-btn {% if active_tab == 'contact' %}active{% endif %}" id="tab-contact">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.15 12 19.79 19.79 0 0 1 1.07 3.36a2 2 0 0 1 2-2.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+    Contact
+  </a>
+  <a href="{% url 'companies:digital_presence' cid %}" class="tab-btn {% if active_tab == 'digital' %}active{% endif %}" id="tab-digital">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+    Digital
+  </a>
+  <a href="{% url 'companies:partnerships_ecosystem' cid %}" class="tab-btn {% if active_tab == 'partnerships' %}active{% endif %}" id="tab-partnerships">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+    Partnerships
+  </a>
+  <a href="{% url 'companies:indygx_assessment' cid %}" class="tab-btn {% if active_tab == 'assessment' %}active{% endif %}" id="tab-assessment">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+    Assessment
+  </a>
+</nav>
+{% endwith %}

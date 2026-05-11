@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block title %}Companies — IndyGX{% endblock %}
+{% block breadcrumb %}
+  <span class="bc-root">IndyGX</span>
+  <span class="bc-sep">/</span>
+  <span class="bc-current">Companies</span>
+{% endblock %}
+{% block topbar_actions %}
+  <span style="font-size:12px;color:var(--text-muted);">{{ meta.total_records|default:"0" }} results</span>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1 class="page-title">Company <span>Directory</span></h1>
+  <p class="page-subtitle">Search and filter across all tracked companies</p>
+</div>
+
+<form method="get" class="search-bar" id="search-form">
+  <div class="search-input-wrap">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <input type="text" name="search" class="search-input" placeholder="Search by company name…" value="{{ search }}" id="search-input" autocomplete="off" />
+  </div>
+  <select name="industry_segment" class="filter-select" id="filter-industry">
+    <option value="">All Industries</option>
+    <option value="Technology" {% if industry == 'Technology' %}selected{% endif %}>Technology</option>
+    <option value="Finance" {% if industry == 'Finance' %}selected{% endif %}>Finance</option>
+    <option value="Healthcare" {% if industry == 'Healthcare' %}selected{% endif %}>Healthcare</option>
+    <option value="Manufacturing" {% if industry == 'Manufacturing' %}selected{% endif %}>Manufacturing</option>
+    <option value="Retail" {% if industry == 'Retail' %}selected{% endif %}>Retail</option>
+  </select>
+  <button type="submit" class="btn btn-primary" id="search-btn">Search</button>
+  {% if search or industry or nature %}
+    <a href="{% url 'companies:company_list' %}" class="btn btn-ghost">Clear</a>
+  {% endif %}
+</form>
+
+{% if error %}
+  <div class="alert alert-error">⚠ {{ error }}</div>
+{% endif %}
+
+{% if companies %}
+  <div class="company-grid">
+    {% for company in companies %}
+    <a href="{% url 'companies:company_detail' company.company_id %}" class="company-card">
+      <div class="company-card-id">ID #{{ company.company_id }}</div>
+      <div class="company-card-name">{{ company.company_name|default:"—" }}</div>
+      <span class="company-card-arrow">→</span>
+    </a>
+    {% endfor %}
+  </div>
+
+  <!-- Pagination -->
+  {% if meta.total_pages > 1 %}
+  <nav class="pagination" aria-label="Pagination">
+    {% if page > 1 %}
+      <a href="?page={{ page|add:"-1" }}&search={{ search }}&industry_segment={{ industry }}" class="page-link" id="page-prev">‹</a>
+    {% else %}
+      <span class="page-link disabled">‹</span>
+    {% endif %}
+
+    {% for p in page_range %}
+      {% if p == page %}
+        <span class="page-link current">{{ p }}</span>
+      {% else %}
+        <a href="?page={{ p }}&search={{ search }}&industry_segment={{ industry }}" class="page-link" id="page-{{ p }}">{{ p }}</a>
+      {% endif %}
+    {% endfor %}
+
+    {% if page < meta.total_pages %}
+      <a href="?page={{ page|add:"1" }}&search={{ search }}&industry_segment={{ industry }}" class="page-link" id="page-next">›</a>
+    {% else %}
+      <span class="page-link disabled">›</span>
+    {% endif %}
+  </nav>
+  {% endif %}
+
+{% else %}
+  <div class="empty-state">
+    <div class="empty-state-icon">🏢</div>
+    <div class="empty-state-text">No companies found</div>
+    <div class="empty-state-sub">Try adjusting your search or filters</div>
+  </div>
+{% endif %}
+{% endblock %}

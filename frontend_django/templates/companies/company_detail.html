@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% block title %}{{ company.company_name|default:"Company" }} — IndyGX{% endblock %}
+{% block breadcrumb %}
+  <a href="{% url 'companies:company_list' %}" style="color:var(--text-secondary)">Companies</a>
+  <span class="bc-sep">/</span>
+  <span class="bc-current">{{ company.company_name|default:"Profile" }}</span>
+{% endblock %}
+
+{% block content %}
+{% if error %}<div class="alert alert-error">⚠ {{ error }}</div>{% endif %}
+{% if company %}
+<!-- Hero -->
+<div class="company-hero">
+  <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:16px;">
+    <div>
+      <div class="company-hero-name">{{ company.company_name|default:"—" }}</div>
+      <div class="company-hero-meta">
+        {% if company.industry_segment %}<span class="badge badge-orange">{{ company.industry_segment }}</span>{% endif %}
+        {% if company.nature_of_company %}<span class="badge badge-gray">{{ company.nature_of_company }}</span>{% endif %}
+        {% if company.year_of_incorporation %}<span class="badge badge-gray">Est. {{ company.year_of_incorporation }}</span>{% endif %}
+        {% if company.employee_size %}<span class="badge badge-gray">{{ company.employee_size }} employees</span>{% endif %}
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      {% if company.website_url %}
+        <a href="{{ company.website_url }}" target="_blank" rel="noopener" class="btn btn-ghost" id="btn-website">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          Website
+        </a>
+      {% endif %}
+      {% if company.linkedin_profile_url %}
+        <a href="{{ company.linkedin_profile_url }}" target="_blank" rel="noopener" class="btn btn-ghost" id="btn-linkedin">LinkedIn</a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<!-- Tab nav -->
+{% include "companies/_tabs.html" %}
+
+<!-- Overview cards -->
+<div class="grid-2">
+  <!-- Core Info -->
+  <div class="card">
+    <div class="card-title">
+      <span class="card-title-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V7l8-4v18M19 21V11l-6-4"/></svg></span>
+      Core Information
+    </div>
+    {% for label, value in overview_primary %}
+      <div class="info-row">
+        <span class="info-label">{{ label }}</span>
+        <span class="info-value">{% if value %}{{ value }}{% else %}<span class="info-empty">Not available</span>{% endif %}</span>
+      </div>
+    {% endfor %}
+    <div class="info-row">
+      <span class="info-label">Type</span>
+      <span class="info-value">{% if company.type %}{{ company.type }}{% else %}<span class="info-empty">—</span>{% endif %}</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">Industry Segment</span>
+      <span class="info-value">{% if company.industry_segment %}{{ company.industry_segment }}{% else %}<span class="info-empty">—</span>{% endif %}</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">Nature</span>
+      <span class="info-value">{% if company.nature_of_company %}{{ company.nature_of_company }}{% else %}<span class="info-empty">—</span>{% endif %}</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">Incorporated</span>
+      <span class="info-value">{% if company.year_of_incorporation %}{{ company.year_of_incorporation }}{% else %}<span class="info-empty">—</span>{% endif %}</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">Employee Size</span>
+      <span class="info-value">{% if company.employee_size %}{{ company.employee_size }}{% else %}<span class="info-empty">—</span>{% endif %}</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">Countries</span>
+      <span class="info-value">{% if company.countries_operating_in %}{{ company.countries_operating_in }}{% else %}<span class="info-empty">—</span>{% endif %}</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">India Coverage</span>
+      <span class="info-value">{% if company.geographic_coverage_india %}{{ company.geographic_coverage_india }}{% else %}<span class="info-empty">—</span>{% endif %}</span>
+    </div>
+  </div>
+
+  <!-- Leadership & Offering -->
+  <div class="card">
+    <div class="card-title">
+      <span class="card-title-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
+      Leadership & Offering
+    </div>
+    <div class="info-row">
+      <span class="info-label">CEO</span>
+      <span class="info-value">{% if company.ceo_name %}{{ company.ceo_name }}{% else %}<span class="info-empty">—</span>{% endif %}</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">CEO LinkedIn</span>
+      <span class="info-value">{% if company.ceo_linkedin_url %}<a href="{{ company.ceo_linkedin_url }}" target="_blank">View Profile ↗</a>{% else %}<span class="info-empty">—</span>{% endif %}</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">Services / Offerings</span>
+      <span class="info-value">{% if company.services_offerings %}{{ company.services_offerings }}{% else %}<span class="info-empty">—</span>{% endif %}</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">Value Proposition</span>
+      <span class="info-value">{% if company.core_value_proposition %}{{ company.core_value_proposition }}{% else %}<span class="info-empty">—</span>{% endif %}</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">Focus Sectors</span>
+      <span class="info-value">{% if company.focus_sectors_industries %}{{ company.focus_sectors_industries }}{% else %}<span class="info-empty">—</span>{% endif %}</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">Website</span>
+      <span class="info-value">{% if company.website_url %}<a href="{{ company.website_url }}" target="_blank">{{ company.website_url }}</a>{% else %}<span class="info-empty">—</span>{% endif %}</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">LinkedIn</span>
+      <span class="info-value">{% if company.linkedin_profile_url %}<a href="{{ company.linkedin_profile_url }}" target="_blank">View Page ↗</a>{% else %}<span class="info-empty">—</span>{% endif %}</span>
+    </div>
+  </div>
+</div>
+{% endif %}
+{% endblock %}

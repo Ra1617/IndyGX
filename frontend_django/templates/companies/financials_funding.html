@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}Financials — {{ company.company_name|default:"Company" }} — IndyGX{% endblock %}
+{% block breadcrumb %}
+  <a href="{% url 'companies:company_list' %}" style="color:var(--text-secondary)">Companies</a>
+  <span class="bc-sep">/</span>
+  <a href="{% url 'companies:company_detail' company.company_id %}" style="color:var(--text-secondary)">{{ company.company_name|default:"Company" }}</a>
+  <span class="bc-sep">/</span>
+  <span class="bc-current">Financials & Funding</span>
+{% endblock %}
+
+{% block content %}
+{% if company %}
+<div class="company-hero" style="padding:24px 32px;">
+  <div class="company-hero-name" style="font-size:24px;">{{ company.company_name }}</div>
+</div>
+{% include "companies/_tabs.html" %}
+{% endif %}
+
+{% if error %}<div class="alert alert-error">⚠ {{ error }}</div>{% endif %}
+
+{% if data %}
+<!-- Quick stats -->
+<div class="stat-grid mb-24">
+  <div class="stat-card">
+    <div class="stat-label">Annual Revenue</div>
+    <div class="stat-value" style="font-size:20px;">{{ data.annual_revenues|default:"—" }}</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Annual Profit</div>
+    <div class="stat-value" style="font-size:20px;">{{ data.annual_profits|default:"—" }}</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">YoY Growth</div>
+    <div class="stat-value" style="font-size:20px;">{{ data.yoy_growth_rate|default:"—" }}</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Total Capital Raised</div>
+    <div class="stat-value" style="font-size:20px;">{{ data.total_capital_raised|default:"—" }}</div>
+  </div>
+</div>
+
+<div class="grid-2">
+  <div class="card">
+    <div class="card-title">
+      <span class="card-title-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span>
+      Financials
+    </div>
+    <div class="info-row"><span class="info-label">Valuation</span><span class="info-value">{% if data.company_valuation %}{{ data.company_valuation }}{% else %}<span class="info-empty">—</span>{% endif %}</span></div>
+    <div class="info-row"><span class="info-label">Profitability Status</span><span class="info-value">{% if data.profitability_status %}{{ data.profitability_status }}{% else %}<span class="info-empty">—</span>{% endif %}</span></div>
+    <div class="info-row"><span class="info-label">Market Share</span><span class="info-value">{% if data.market_share %}{{ data.market_share }}{% else %}<span class="info-empty">—</span>{% endif %}</span></div>
+  </div>
+  <div class="card">
+    <div class="card-title">
+      <span class="card-title-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></span>
+      Funding
+    </div>
+    <div class="info-row"><span class="info-label">Key Investors</span><span class="info-value">{% if data.key_investors_backers %}{{ data.key_investors_backers }}{% else %}<span class="info-empty">—</span>{% endif %}</span></div>
+    <div class="info-row"><span class="info-label">Recent Funding Rounds</span><span class="info-value">{% if data.recent_funding_rounds %}{{ data.recent_funding_rounds }}{% else %}<span class="info-empty">—</span>{% endif %}</span></div>
+    <div class="info-row"><span class="info-label">Exit History</span><span class="info-value">{% if data.exit_history %}{{ data.exit_history }}{% else %}<span class="info-empty">—</span>{% endif %}</span></div>
+  </div>
+</div>
+{% else %}
+  {% if not error %}
+  <div class="empty-state"><div class="empty-state-icon">💰</div><div class="empty-state-text">No financial data available</div></div>
+  {% endif %}
+{% endif %}
+{% endblock %}

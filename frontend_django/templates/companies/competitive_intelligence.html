@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Competitive Intelligence — {{ company.company_name|default:"Company" }} — IndyGX{% endblock %}
+{% block breadcrumb %}
+  <a href="{% url 'companies:company_list' %}" style="color:var(--text-secondary)">Companies</a>
+  <span class="bc-sep">/</span>
+  <a href="{% url 'companies:company_detail' company.company_id %}" style="color:var(--text-secondary)">{{ company.company_name|default:"Company" }}</a>
+  <span class="bc-sep">/</span>
+  <span class="bc-current">Competitive Intelligence</span>
+{% endblock %}
+
+{% block content %}
+{% if company %}
+<div class="company-hero" style="padding:24px 32px;">
+  <div class="company-hero-name" style="font-size:24px;">{{ company.company_name }}</div>
+</div>
+{% include "companies/_tabs.html" %}
+{% endif %}
+
+{% if error %}<div class="alert alert-error">⚠ {{ error }}</div>{% endif %}
+
+{% if data %}
+<div class="grid-2">
+  <div class="card">
+    <div class="card-title">
+      <span class="card-title-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg></span>
+      Competitive Landscape
+    </div>
+    <div class="info-row"><span class="info-label">Competitors</span><span class="info-value">{% if data.competitors %}{{ data.competitors }}{% else %}<span class="info-empty">—</span>{% endif %}</span></div>
+    <div class="info-row"><span class="info-label">Unique Differentiators</span><span class="info-value">{% if data.unique_differentiators %}{{ data.unique_differentiators }}{% else %}<span class="info-empty">—</span>{% endif %}</span></div>
+    <div class="info-row"><span class="info-label">Competitive Advantages</span><span class="info-value">{% if data.competitive_advantages %}{{ data.competitive_advantages }}{% else %}<span class="info-empty">—</span>{% endif %}</span></div>
+  </div>
+  <div class="card">
+    <div class="card-title">
+      <span class="card-title-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span>
+      Gaps & Challenges
+    </div>
+    <div class="info-row"><span class="info-label">Weakness / Gaps</span><span class="info-value">{% if data.weakness_gaps %}{{ data.weakness_gaps }}{% else %}<span class="info-empty">—</span>{% endif %}</span></div>
+    <div class="info-row"><span class="info-label">Key Challenges & Needs</span><span class="info-value">{% if data.key_challenges_needs %}{{ data.key_challenges_needs }}{% else %}<span class="info-empty">—</span>{% endif %}</span></div>
+  </div>
+</div>
+{% else %}
+  {% if not error %}
+  <div class="empty-state"><div class="empty-state-icon">📊</div><div class="empty-state-text">No competitive data available</div></div>
+  {% endif %}
+{% endif %}
+{% endblock %}

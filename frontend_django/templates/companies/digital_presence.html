@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}Digital Presence — {{ company.company_name|default:"Company" }} — IndyGX{% endblock %}
+{% block breadcrumb %}
+  <a href="{% url 'companies:company_list' %}" style="color:var(--text-secondary)">Companies</a>
+  <span class="bc-sep">/</span>
+  <a href="{% url 'companies:company_detail' company.company_id %}" style="color:var(--text-secondary)">{{ company.company_name|default:"Company" }}</a>
+  <span class="bc-sep">/</span>
+  <span class="bc-current">Digital Presence</span>
+{% endblock %}
+
+{% block content %}
+{% if company %}
+<div class="company-hero" style="padding:24px 32px;">
+  <div class="company-hero-name" style="font-size:24px;">{{ company.company_name }}</div>
+</div>
+{% include "companies/_tabs.html" %}
+{% endif %}
+
+{% if error %}<div class="alert alert-error">⚠ {{ error }}</div>{% endif %}
+
+{% if data %}
+<!-- Rating mini-stats -->
+<div class="stat-grid mb-24">
+  <div class="stat-card">
+    <div class="stat-label">Brand Sentiment</div>
+    <div class="stat-value" style="font-size:22px;">{{ data.brand_sentiment_score|default:"—" }}</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Glassdoor</div>
+    <div class="stat-value" style="font-size:22px;">{{ data.glassdoor_rating|default:"—" }}</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Google Reviews</div>
+    <div class="stat-value" style="font-size:22px;">{{ data.google_reviews_rating|default:"—" }}</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Indeed Rating</div>
+    <div class="stat-value" style="font-size:22px;">{{ data.indeed_rating|default:"—" }}</div>
+  </div>
+</div>
+
+<div class="grid-2">
+  <div class="card">
+    <div class="card-title">
+      <span class="card-title-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span>
+      Online Presence
+    </div>
+    <div class="info-row"><span class="info-label">Website Quality</span><span class="info-value">{% if data.quality_of_website %}{{ data.quality_of_website }}{% else %}<span class="info-empty">—</span>{% endif %}</span></div>
+    <div class="info-row"><span class="info-label">Traffic Rank</span><span class="info-value">{% if data.website_traffic_rank %}{{ data.website_traffic_rank }}{% else %}<span class="info-empty">—</span>{% endif %}</span></div>
+    <div class="info-row"><span class="info-label">Social Media Followers</span><span class="info-value">{% if data.social_media_followers_combined %}{{ data.social_media_followers_combined }}{% else %}<span class="info-empty">—</span>{% endif %}</span></div>
+    <div class="info-row"><span class="info-label">Awards & Recognition</span><span class="info-value">{% if data.awards_recognition %}{{ data.awards_recognition }}{% else %}<span class="info-empty">—</span>{% endif %}</span></div>
+  </div>
+  <div class="card">
+    <div class="card-title">
+      <span class="card-title-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
+      Market & Customers
+    </div>
+    <div class="info-row"><span class="info-label">Top Customers</span><span class="info-value">{% if data.top_customers %}{{ data.top_customers }}{% else %}<span class="info-empty">—</span>{% endif %}</span></div>
+    <div class="info-row"><span class="info-label">Average Deal Size</span><span class="info-value">{% if data.average_deal_size %}{{ data.average_deal_size }}{% else %}<span class="info-empty">—</span>{% endif %}</span></div>
+    <div class="info-row"><span class="info-label">News</span><span class="info-value">{% if data.news_about_company %}{{ data.news_about_company }}{% else %}<span class="info-empty">—</span>{% endif %}</span></div>
+  </div>
+</div>
+{% else %}
+  {% if not error %}
+  <div class="empty-state"><div class="empty-state-icon">🌐</div><div class="empty-state-text">No digital presence data available</div></div>
+  {% endif %}
+{% endif %}
+{% endblock %}
